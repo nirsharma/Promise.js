@@ -31,6 +31,10 @@ function MyPromise(func) {
             this.value.then(x => {
                 that.value = that.successCB[index](x) || x;
                 waiter.call(that, ++index);
+            }).catch(x => {
+                if(that.errorCB) that.errorCB(x);
+                if (that.finallyCB) that.finallyCB(x);
+                return;
             })
         } else {
             this.value = this.successCB[index](this.value) || this.value;
